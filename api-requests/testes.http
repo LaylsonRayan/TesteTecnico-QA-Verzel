@@ -1,0 +1,123 @@
+### Teste 01: Fronteira Exata do Frete Grátis (Exatamente R$ 200,00)
+POST https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular
+Content-Type: application/json
+
+{
+  "itens": [
+    { "produtoId": "P005", "quantidade": 2 }
+  ]
+}
+
+###
+
+### Teste 02: Limite Inferior da Fronteira (Abaixo de R$ 200,00)
+POST https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular
+Content-Type: application/json
+
+{
+  "itens": [
+    { "produtoId": "P003", "quantidade": 1 }
+  ]
+}
+
+###
+
+### Teste 03: Quebrando o Limite Máximo de Itens (Quantidade = 6)
+POST https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular
+Content-Type: application/json
+
+{
+  "itens": [
+    { "produtoId": "P008", "quantidade": 6 }
+  ]
+}
+
+
+### Teste 04: Aplicação de Cupom Válido (BEMVINDO10)
+POST https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular
+Content-Type: application/json
+
+{
+  "itens": [
+    { "produtoId": "P005", "quantidade": 1 }
+  ],
+  "cupom": "BEMVINDO10"
+}
+
+###
+
+### Teste 05: Cupom com Letras Minúsculas e Espaços
+POST https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular
+Content-Type: application/json
+
+{
+  "itens": [
+    { "produtoId": "P005", "quantidade": 1 }
+  ],
+  "cupom": " bemvindo10 "
+}
+
+###
+
+### Teste 06: Uso de Cupom Expirado (VERAO2026)
+POST https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular
+Content-Type: application/json
+
+{
+  "itens": [
+    { "produtoId": "P005", "quantidade": 1 }
+  ],
+  "cupom": "VERAO2026"
+}
+
+
+### Teste 07: Criar Pedido com Dados do Cliente Válidos (Sucesso)
+POST https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos
+Content-Type: application/json
+
+{
+  "cliente": {
+    "nome": "Maria Silva",
+    "email": "maria@exemplo.com",
+    "cep": "01310-100"
+  },
+  "itens": [
+    { "produtoId": "P005", "quantidade": 1 }
+  ],
+  "cupom": "BEMVINDO10"
+}
+
+###
+
+### Teste 08: Criar Pedido com Nome Inválido (Sem sobrenome)
+POST https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos
+Content-Type: application/json
+
+{
+  "cliente": {
+    "nome": "Maria",
+    "email": "maria@exemplo.com",
+    "cep": "01310-100"
+  },
+  "itens": [
+    { "produtoId": "P005", "quantidade": 1 }
+  ]
+}
+
+###
+
+### Teste 09: Criar Pedido com Cupom Expirado (Deve retornar erro 422)
+POST https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos
+Content-Type: application/json
+
+{
+  "cliente": {
+    "nome": "Maria Silva",
+    "email": "maria@exemplo.com",
+    "cep": "01310-100"
+  },
+  "itens": [
+    { "produtoId": "P005", "quantidade": 1 }
+  ],
+  "cupom": "VERAO2026"
+}
